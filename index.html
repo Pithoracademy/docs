@@ -45,30 +45,70 @@
       margin-bottom: 1rem;
     }
 
+    /* --- Navigation Bar --- */
     nav {
       display: flex;
       justify-content: center;
-      flex-wrap: wrap;
+      align-items: center; /* Vertically center items in nav */
       background-color: white;
       border-bottom: 1px solid #ddd;
       position: sticky;
       top: 0;
       z-index: 1000;
+      padding: 0 1rem; /* Add some padding for mobile view */
+    }
+    
+    /* --- FIX FOR LAPTOP/DESKTOP --- */
+    .nav-links {
+      display: flex; /* This ensures links are horizontal on desktop */
     }
 
-    nav a {
+    .nav-links a {
+      display: block;
       padding: 1rem;
       text-decoration: none;
       color: var(--dark);
       font-weight: 600;
-      transition: background-color 0.3s;
+      transition: background-color 0.3s, color 0.3s;
     }
 
-    nav a:hover {
+    .nav-links a:hover {
       background-color: var(--secondary-color);
       color: white;
     }
+    
+    .nav-brand {
+        display: none; /* Hidden on desktop */
+        align-items: center;
+        gap: 0.75rem;
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: var(--dark);
+    }
+    
+    .nav-brand .logo {
+        width: 40px;
+        height: 40px;
+        margin-bottom: 0;
+    }
 
+    #menu-toggle {
+        display: none; /* Hidden on desktop */
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 0.5rem;
+    }
+
+    #menu-toggle .bar {
+        display: block;
+        width: 25px;
+        height: 3px;
+        margin: 5px auto;
+        background-color: var(--dark);
+        transition: all 0.3s ease-in-out;
+    }
+    
     .hero {
       background: linear-gradient(to right, #023e8a, #0096c7);
       color: white;
@@ -86,8 +126,15 @@
       margin-bottom: 2rem;
     }
 
+    .cta-buttons {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 1rem;
+        flex-wrap: wrap;
+    }
+
     .cta-buttons a {
-      margin: 0 1rem;
       padding: 0.75rem 1.5rem;
       background-color: white;
       color: var(--primary-color);
@@ -119,12 +166,19 @@
       margin-bottom: 4rem;
     }
 
+    .videos {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1.5rem;
+    }
+
     .videos iframe {
       width: 100%;
       max-width: 560px;
-      height: 315px;
-      display: flex;
-      margin: 1rem auto;
+      aspect-ratio: 16 / 9;
+      display: block;
+      margin: 0;
       border-radius: 12px;
       box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     }
@@ -165,12 +219,75 @@
       margin: 0 0.5rem;
     }
 
+    /* --- Mobile Responsive Design --- */
     @media (max-width: 768px) {
-      .hero h1 {
+      h1 {
         font-size: 2rem;
       }
+      
+      h2 {
+        font-size: 1.75rem;
+      }
+
+      header {
+        padding: 1.5rem 1rem;
+      }
+      
+      .hero {
+        padding: 2.5rem 1rem;
+      }
+
+      .hero h1 {
+        font-size: 2.2rem;
+      }
+
+      .hero p {
+        font-size: 1rem;
+      }
+      
+      .cta-buttons {
+          flex-direction: column;
+          gap: 1rem;
+      }
+      
+      .cta-buttons a {
+          margin: 0;
+          width: 80%;
+          max-width: 300px;
+          text-align: center;
+      }
+
       nav {
+        justify-content: space-between;
+        padding: 0.5rem 1rem;
+      }
+      
+      .nav-brand {
+          display: flex; /* Show brand in nav on mobile */
+      }
+      
+      .nav-links {
+        display: none; /* Hide links by default */
+        position: absolute;
+        top: 61px; /* Position below nav bar */
+        left: 0;
+        width: 100%;
+        background-color: white;
         flex-direction: column;
+        text-align: center;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      }
+      
+      .nav-links.active {
+          display: flex; /* Show menu when active */
+      }
+
+      #menu-toggle {
+          display: block; /* Show hamburger icon */
+      }
+
+      .container {
+          padding: 1rem;
       }
     }
   </style>
@@ -183,12 +300,23 @@
   </header>
 
   <nav>
-    <a href="#home">Home</a>
-    <a href="#topics">Topics</a>
-    <a href="#podcasts">Podcasts</a>
-    <a href="#videos">Videos</a>
-    <a href="#about">About Us</a>
-    <a href="#contact">Contact</a>
+    <div class="nav-brand">
+        <div class="logo"></div>
+        <span>Pithoracademy</span>
+    </div>
+    <button id="menu-toggle">
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+    </button>
+    <div class="nav-links" id="nav-links">
+        <a href="#home">Home</a>
+        <a href="#topics">Topics</a>
+        <a href="#podcasts">Podcasts</a>
+        <a href="#videos">Videos</a>
+        <a href="#about">About Us</a>
+        <a href="#contact">Contact</a>
+    </div>
   </nav>
 
   <section class="hero">
@@ -204,20 +332,23 @@
     <section id="home" class="section">
       <h2>Latest Content</h2>
       <div class="videos">
-        <iframe src="https://www.youtube.com/embed/tHWIUwfGzwQ" title="Java Streams Podcast" allowfullscreen></iframe>
-        <iframe src="https://www.youtube.com/embed/EqrbN840zig" title="Spring Boot Podcast" allowfullscreen></iframe>
-        <iframe src="https://www.youtube.com/embed/0MZgcmoSku4" title="Rest API" allowfullscreen></iframe>
+        <iframe src="https://music.youtube.com/watch?v=-YopMqOMXSs&feature=shared" title="Java 17 Features" allowfullscreen></iframe>
+        <iframe src="https://music.youtube.com/watch?v=EqrbN840zig&feature=shared" title="Spring Boot" allowfullscreen></iframe>
+        <iframe src="https://music.youtube.com/watch?v=qHwjPxb4OqM&feature=shared" title="Java Loops Vs Streams" allowfullscreen></iframe>
+
+        <iframe src="https://www.youtube.com/playlist?list=PLLowoPAvH8M_rO87I7IvIe2wKCc5psEYp" title="Java Concepts" allowfullscreen></iframe>
+        <iframe src="https://www.youtube.com/playlist?list=PLLowoPAvH8M_mTMRF6d2Xh1XyVyZC-cif" title="Spring Boot with Mysql" allowfullscreen></iframe>
+        <iframe src="https://www.youtube.com/playlist?list=PLLowoPAvH8M--TYJ3WHT2x7-4En-YKbOm" title="Rest API" allowfullscreen></iframe>
       </div>
     </section>
 
     <section id="topics" class="section">
       <h2>Our Core Topics</h2>
       <div class="topic-buttons">
-        <a href="https://www.youtube.com/playlist?list=PLLowoPAvH8M8PW7FexqXQUm3dwdbw4pAA">Java Podcast</a>
-        <a href="https://www.youtube.com/playlist?list=PLLowoPAvH8M9NBRWPqaNNnygFHssaQQrn">Spring Boot Concepts</a>
+        <a href="https://music.youtube.com/playlist?list=PLLowoPAvH8M8PW7FexqXQUm3dwdbw4pAA&feature=shared">Java Podcast</a>
+        <a href="https://music.youtube.com/playlist?list=PLLowoPAvH8M9NBRWPqaNNnygFHssaQQrn&feature=shared">Spring Boot Concepts</a>
         <a href="https://www.youtube.com/playlist?list=PLLowoPAvH8M--TYJ3WHT2x7-4En-YKbOm">Rest API</a>
         <a href="https://www.youtube.com/playlist?list=PLLowoPAvH8M_mTMRF6d2Xh1XyVyZC-cif">Spring Boot Implementation</a>
-        <!-- <a href="#">Kubernetes</a> -->
       </div>
     </section>
 
@@ -228,8 +359,8 @@
         <a href="https://open.spotify.com/show/4WwstTvCBb18IKyqGVHYAU"><i class="fab fa-spotify"></i> Spotify</a>
         <a href="https://music.amazon.com/podcasts/0c4eac7c-e695-49b4-b825-595fface346b/pithoracademy-presents-deep-dive"><i class="fab fa-amazon"></i> Amazon Music</a>
         <a href="https://www.youtube.com/@pithoracademy"><i class="fab fa-youtube"></i> YouTube</a>
+        <a href="https://music.youtube.com/channel/UCMO9B2qiqsyC3ui4Vk4P7Ig"><i class="fab fa-youtube"></i> YouTube Music</a>
         <a href="https://www.jiosaavn.com/shows/pithoracademy-presents-deep-dive/1/J4wBuNvwFro_"><i class="fas fa-headphones"></i> Saavn</a>
-        <!-- <a href="#"><i class="fas fa-music"></i> Gaana</a> -->
       </div>
     </section>
 
@@ -245,7 +376,7 @@
 
     <section id="about" class="section">
       <h2>About Us</h2>
-      <p style="max-width:800px;margin:auto;text-align:center;">Pithoracademy is a professional education platform helping tech learners grow with in-depth content in Java, Sprin Boot,Cloud, AWS, Docker, Kubernetes, and more. We blend practical knowledge with industry needs to give you the edge in your career.</p>
+      <p style="max-width:800px;margin:auto;text-align:center;">Pithoracademy is a professional education platform helping tech learners grow with in-depth content in Java, Spring Boot, Cloud, AWS, Docker, Kubernetes, and more. We blend practical knowledge with industry needs to give you the edge in your career.</p>
     </section>
 
     <section id="contact" class="section">
@@ -256,15 +387,36 @@
         <a href="https://www.instagram.com/p/DLt3Lp0Sp4z/">Instagram</a>
         <a href="https://www.linkedin.com/company/pithoracademy">LinkedIn</a>
         <a href="https://www.youtube.com/@pithoracademy">YouTube</a>
+        <a href="https://music.youtube.com/channel/UCMO9B2qiqsyC3ui4Vk4P7Ig">YouTube Music</a>
       </div>
     </section>
   </div>
 
   <footer>
-    <p>&copy; 2025 Pithoracademy. All rights reserved.</p>
+    <p>© 2025 Pithoracademy. All rights reserved.</p>
     <p>
-      <!-- <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a> -->
-    </p>
+      </p>
   </footer>
+
+  <script>
+    const menuToggle = document.getElementById('menu-toggle');
+    const navLinks = document.getElementById('nav-links');
+    const navLinkItems = document.querySelectorAll('.nav-links a');
+
+    // Toggle menu on hamburger click
+    menuToggle.addEventListener('click', () => {
+      navLinks.classList.toggle('active');
+    });
+
+    // Close menu when a link is clicked
+    navLinkItems.forEach(link => {
+      link.addEventListener('click', () => {
+        if (navLinks.classList.contains('active')) {
+          navLinks.classList.remove('active');
+        }
+      });
+    });
+  </script>
+
 </body>
 </html>
